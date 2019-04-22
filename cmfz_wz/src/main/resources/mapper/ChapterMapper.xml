@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ChapterMapper" >
+  <resultMap id="BaseResultMap" type="com.baizhi.entity.Chapter" >
+    <id column="cid" property="id" jdbcType="VARCHAR" />
+    <result column="cname" property="name" jdbcType="VARCHAR" />
+    <result column="path" property="path" jdbcType="VARCHAR" />
+    <result column="size" property="size" jdbcType="DOUBLE" />
+    <result column="length" property="length" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="play_times" property="playTimes" jdbcType="INTEGER" />
+    <result column="download_times" property="downloadTimes" jdbcType="INTEGER" />
+    <result column="cfilename" property="fileName" jdbcType="VARCHAR"/>
+    <association property="album" javaType="album">
+      <id column="aid" property="id"/>
+      <result column="aname" property="name"/>
+      <result column="rating" property="rating"/>
+      <result column="author" property="author"/>
+      <result column="announcer" property="announcer"/>
+      <result column="episodes" property="episodes"/>
+      <result column="intro" property="intro"/>
+      <result column="image" property="image"/>
+      <result column="afilename" property="fileName"/>
+      <result column="acreateDate" property="createDate"/>
+      <result column="status" property="status"/>
+    </association>
+  </resultMap>
+  <select id="queryOne" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select c.id as cid, c.name as cname, c.path, c.size, c.length, c.create_date,
+    c.play_times, c.download_times,c.file_name as cfilename,
+    a.id as aid,
+    a.name as aname,
+    a.rating,
+    a.author,
+    a.announcer,
+    a.episodes,
+    a.intro,
+    a.image,
+    a.file_name as afilename,
+    a.create_date as acreateDate,
+    a.status
+    from chapter c left join album a on c.album_id=a.id
+    order by a.create_date desc
+    where c.id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="queryAll" resultMap="BaseResultMap" >
+    select c.id as cid, c.name as cname, c.path, c.size, c.length, c.create_date,
+    c.play_times, c.download_times,c.file_name as cfilename,
+    a.id as aid,
+    a.name as aname,
+    a.rating,
+    a.author,
+    a.announcer,
+    a.episodes,
+    a.intro,
+    a.image,
+    a.file_name as afilename,
+    a.create_date as acreateDate,
+    a.status
+    from chapter c left join album a on c.album_id=a.id
+    order by a.create_date desc
+  </select>
+</mapper>
